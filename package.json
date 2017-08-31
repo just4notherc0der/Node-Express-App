@@ -1,0 +1,23 @@
+{
+  "name": "node-express-app",
+  "version": "1.0.0",
+  "description": "Traversy Media YT Series",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/just4notherc0der/Node-Express-App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/just4notherc0der/Node-Express-App/issues"
+  },
+  "homepage": "https://github.com/just4notherc0der/Node-Express-App#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "hbs": "^4.0.1"
+  }
+}
