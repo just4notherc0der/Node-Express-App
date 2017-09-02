@@ -52,12 +52,14 @@
 }
 
 .article a {
-  margin: 25px;
+  display: block;
+  margin-top: 50px;
   padding: 5px;
   text-decoration: none;
   font-weight: bold;
   background: #c61925;
   color: white;
+  width: auto;
 }
 
 .article:hover {

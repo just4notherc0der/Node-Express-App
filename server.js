@@ -71,6 +71,38 @@ app.get('/article/:id', (req, res) => {
   });
 });
 
+// edit article
+app.get('/article/edit/:id', (req, res) => {
+  Article.findById(req.params.id, (err, article) => {
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.render('edit', { article })
+    }
+  });
+});
+
+app.post('/article/edit/:id', (req, res) => {
+  const article = {
+    title: req.body.title,
+    author: req.body.author,
+    body: req.body.body
+  };
+
+  const query = { _id: req.params.id };
+
+  Article.update(query, article, (err) => {
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+
 // add articles route
 app.get('/articles/add', (req, res) => {
   res.render('add', {
@@ -92,6 +124,20 @@ app.post('/articles/add', (req, res) => {
       res.redirect('/');
     }
   })
+});
+
+// delete article
+app.delete('/article/:id', (req, res) => {
+  let query = { _id: req.params.id };
+
+  Article.remove(query, function(err) {
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.send('Success');
+    }
+  });
 });
 
 // start the server

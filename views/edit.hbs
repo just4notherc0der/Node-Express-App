@@ -1,0 +1,9 @@
+<div class="container">
+  <form class="form" method="post">
+    <h3>Add article</h3>
+    <input type="text" name="title" value="{{ article.title }}">
+    <input type="text" name="author" value="{{ article.author }}">
+    <textarea name="body">{{ article.body }}</textarea>
+    <button type="submit">Update</button>
+  </form>
+</div>
