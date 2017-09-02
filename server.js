@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // database connection
 mongoose.connect('mongodb://localhost/nodeapp', {
@@ -24,6 +25,15 @@ const Article = require('./models/article');
 
 // create the app
 const app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+// set public folder
+app.use(express.static());
 
 // load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -53,6 +63,22 @@ app.get('/articles/add', (req, res) => {
   res.render('add', {
     title: 'Add'
   });
+});
+
+app.post('/articles/add', (req, res) => {
+  let article = new Article;
+  article.title = req.body.title;
+  article.author = req.body.author;
+  article.body = req.body.body;
+
+  article.save((err) => {
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('/');
+    }
+  })
 });
 
 // start the server

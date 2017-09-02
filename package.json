@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/just4notherc0der/Node-Express-App#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
     "mongoose": "^4.11.9"
