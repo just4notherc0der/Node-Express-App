@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // set public folder
-app.use(express.static());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +43,7 @@ app.engine('hbs', hbs({
   layoutsDir: `${ __dirname }/views/layouts`
 }));
 app.set('view engine', 'hbs');
+
 
 // index route
 app.get('/', (req, res) => {
@@ -54,6 +55,18 @@ app.get('/', (req, res) => {
         title: 'Articles',
         articles
       });
+    }
+  });
+});
+
+// single article
+app.get('/article/:id', (req, res) => {
+  Article.findById(req.params.id, (err, article) => {
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.render('article', { article })
     }
   });
 });
