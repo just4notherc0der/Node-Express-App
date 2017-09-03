@@ -18,8 +18,11 @@
   "homepage": "https://github.com/just4notherc0der/Node-Express-App#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
-    "mongoose": "^4.11.9"
+    "express-session": "^1.15.5",
+    "express-validator": "^4.1.1",
+    "mongoose": "^4.7.2"
   }
 }

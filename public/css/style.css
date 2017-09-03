@@ -104,3 +104,16 @@
   background: #c61925;
   font-weight: bold;
 }
+
+.errors {
+  padding: 15px;
+  background: rgba(182, 18, 18, 0.5);
+  border: 1px solid rgb(155, 0, 0);
+  width: 400px;
+  margin: 20px auto 0;
+}
+
+.errors p {
+  font-weight: bold;
+  color: rgb(155, 0, 0);
+}

@@ -3,6 +3,8 @@ const path = require('path');
 const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const session = require('express-session');
 
 // database connection
 mongoose.connect('mongodb://localhost/nodeapp', {
@@ -20,7 +22,7 @@ db.on('error', (err) => {
   console.log(err);
 });
 
-// load models
+// load Article model
 const Article = require('./models/article');
 
 // create the app
@@ -44,6 +46,31 @@ app.engine('hbs', hbs({
 }));
 app.set('view engine', 'hbs');
 
+// express session
+app.use(session({
+  secret: '63421somethingrandom',
+  resave: true,
+  saveUninitialized: true
+}))
+
+// express validator
+app.use(expressValidator({
+  errorFormatter: (param, msg, value) => {
+    let namespace = param.split('.');
+    let root = namespace.shift();
+    let formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+
+    return {
+      param: formParam,
+      msg,
+      value
+    };
+  }
+}));
 
 // index route
 app.get('/', (req, res) => {
@@ -59,86 +86,11 @@ app.get('/', (req, res) => {
   });
 });
 
-// single article
-app.get('/article/:id', (req, res) => {
-  Article.findById(req.params.id, (err, article) => {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.render('article', { article })
-    }
-  });
-});
 
-// edit article
-app.get('/article/edit/:id', (req, res) => {
-  Article.findById(req.params.id, (err, article) => {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.render('edit', { article })
-    }
-  });
-});
+// articles route
+let articles = require('./routes/articles');
+app.use('/articles', articles);
 
-app.post('/article/edit/:id', (req, res) => {
-  const article = {
-    title: req.body.title,
-    author: req.body.author,
-    body: req.body.body
-  };
-
-  const query = { _id: req.params.id };
-
-  Article.update(query, article, (err) => {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.redirect('/');
-    }
-  });
-});
-
-
-// add articles route
-app.get('/articles/add', (req, res) => {
-  res.render('add', {
-    title: 'Add'
-  });
-});
-
-app.post('/articles/add', (req, res) => {
-  let article = new Article;
-  article.title = req.body.title;
-  article.author = req.body.author;
-  article.body = req.body.body;
-
-  article.save((err) => {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.redirect('/');
-    }
-  })
-});
-
-// delete article
-app.delete('/article/:id', (req, res) => {
-  let query = { _id: req.params.id };
-
-  Article.remove(query, function(err) {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.send('Success');
-    }
-  });
-});
 
 // start the server
 app.listen(3000, () => console.log('Server started on port 3000'));

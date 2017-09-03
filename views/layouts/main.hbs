@@ -6,12 +6,26 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+
     <nav class="navbar">
+      {{ msg }}
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/articles/add">Add Article</a></li>
+        <li><a href="/articles/add_article">Add Article</a></li>
       </ul>
     </nav>
+
+    {{#if errors}}
+      <div class="container">
+        <div class="errors">
+          {{#each errors}}
+            <p>{{ this.msg }}</p>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
     {{{ body }}}
+
   </body>
 </html>

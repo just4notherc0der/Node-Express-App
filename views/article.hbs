@@ -3,7 +3,7 @@
     <h1>{{ article.title }}</h1>
     <p>{{ article.author }}</p>
     <p>{{ article.body }}</p>
-    <a href="/article/edit/{{ article._id }}">Edit</a>
+    <a href="/articles/edit/{{ article._id }}">Edit</a>
     <a href="#" class="delete" data-id="{{ article._id }}">Delete</a>
   </div>
 </div>
@@ -19,7 +19,7 @@ $(document).ready(function() {
     const id = target.attr('data-id');
     $.ajax({
       type: 'DELETE',
-      url: '/article/'+id,
+      url: '/articles/'+id,
       success: function(res) {
         alert(res);
         window.location.href = '/';
