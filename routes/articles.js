@@ -1,8 +1,8 @@
-let express = require('express');
-let router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 // load Article model
-let Article = require('../models/article');
+const Article = require('../models/article');
 
 // edit article
 router.get('/edit/:id', (req, res) => {
