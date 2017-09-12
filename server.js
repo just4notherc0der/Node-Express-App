@@ -5,9 +5,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
+const passport = require('passport');
+const dbconfig = require('./config/database');
 
 // database connection
-mongoose.connect('mongodb://localhost/nodeapp', {
+mongoose.connect(dbconfig.database, {
   useMongoClient: true
 });
 const db = mongoose.connection;
@@ -71,6 +73,17 @@ app.use(expressValidator({
     };
   }
 }));
+
+// passport
+require('./config/passport')(passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', function(req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
 
 // index route
 app.get('/', (req, res) => {

@@ -12,6 +12,12 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/articles/add_article">Add Article</a></li>
+        {{#if user}}
+          <li><a href="/users/logout">Logout</a></li>
+        {{else}}
+          <li><a href="/users/register">Register</a></li>
+          <li><a href="/users/login">Login</a></li>
+        {{/if}}
       </ul>
     </nav>
 
