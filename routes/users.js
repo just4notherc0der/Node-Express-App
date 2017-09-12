@@ -17,14 +17,32 @@ router.post('/register', (req, res) => {
   const password = req.body.password;
   const password2 = req.body.password2;
 
-  req.checkBody('name','Name is required').notEmpty();
-  req.checkBody('email','Name is required').notEmpty();
-  req.checkBody('username','Username is required').notEmpty();
-  req.checkBody('password','Password is required').notEmpty();
-  req.checkBody('password2','Passwords don\'t match').equals(req.body.password);
+  let newUser = new User({
+    name,
+    username,
+    email,
+    password
+  });
 
-  let errors = req.getValidationResult();
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if(err) {
+        console.log(err);
+      }
+      newUser.password = hash;
+      newUser.save((err) => {
+        if(err) {
+          console.log(err);
+          return;
+        } else {
+          res.redirect('/users/login');
+        }
+      })
+    });
+  });
+});
 
+/* VALIDATION
   if(errors) {
 
     console.log(errors);
@@ -56,7 +74,9 @@ router.post('/register', (req, res) => {
       });
     });
   }
-});
+});*/
+
+
 
 // login
 router.get('/login', (req, res) => {
