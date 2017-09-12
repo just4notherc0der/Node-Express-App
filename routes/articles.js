@@ -5,7 +5,7 @@ const router = express.Router();
 const Article = require('../models/article');
 
 // edit article
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Article.findById(req.params.id, (err, article) => {
     if(err) {
       console.log(err);
@@ -16,7 +16,7 @@ router.get('/edit/:id', (req, res) => {
   });
 });
 
-router.post('/edit/:id', (req, res) => {
+router.post('/edit/:id', ensureAuthenticated, (req, res) => {
   const article = {
     title: req.body.title,
     author: req.body.author,
@@ -37,7 +37,7 @@ router.post('/edit/:id', (req, res) => {
 
 
 // add articles route
-router.get('/add_article', (req, res) => {
+router.get('/add_article', ensureAuthenticated, (req, res) => {
   res.render('add_article', {
     title: 'Add'
   });
@@ -97,5 +97,15 @@ router.get('/:id', (req, res) => {
     }
   });
 });
+
+// Access Control
+function ensureAuthenticated(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  } else {
+    //req.flash('danger', 'Please login');
+    res.redirect('/users/login');
+  }
+}
 
 module.exports = router;
